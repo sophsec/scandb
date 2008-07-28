@@ -47,6 +47,7 @@ module ScanDB
     end
 
     def to_s
+      ip
     end
 
   end

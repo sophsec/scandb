@@ -36,7 +36,7 @@ module ScanDB
 
     property :version, String
 
-    has n, :os_guesses, :class_name => 'OSGuess'
+    has n, :guesses, :class_name => 'OSGuess'
 
   end
 end

@@ -32,9 +32,9 @@ module ScanDB
 
     property :name, String
 
-    has n, :ports, :class_name => 'ScannedPort'
+    has n, :scanned, :class_name => 'ScannedPort'
 
-    has n, :hosts, :through => :ports
+    has n, :hosts, :through => :scanned
 
     #
     # Returns the String form of the service.
