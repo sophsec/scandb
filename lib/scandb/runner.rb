@@ -36,18 +36,54 @@ module ScanDB
       options = OpenStruct.new
 
       opts = OptionParser.new do |opts|
-        opts.banner = 'usage: scandb [options] [FILE]'
+        opts.banner = 'usage: scandb [-d URI] [--import-nmap FILE | -L | -p PORT | -s NAME]'
 
-        opts.on('-d','--database','URI',"The URI for the Database. Defaults to #{Database::DEFAULT_CONFIG}") do |uri|
+        opts.on('-d','--database URI','The URI for the Database.','Defaults to ~/.scandb/scandb.db') do |uri|
           options.database = uri
         end
 
-        opts.on('--import-nmap','FILE','Import a Nmap XML scan file') do |file|
-          options.nmap_file = file
+        opts.on('--import-nmap FILE','Import a Nmap XML scan file') do |file|
+          options.import = :nmap
+          options.import_file = file
+        end
+
+        opts.on('-L','--list-hosts','List all hosts within ScanDB') do
+          options.list_hosts = true
+        end
+
+        opts.on('-p','--with-port PORT','List hosts with the specified open PORT') do |port|
+          options.with_port = port.to_i
+        end
+
+        opts.on('-s','--with-service NAME','List hosts with the specified service') do |name|
+          options.with_service = name
+        end
+
+        opts.on('-h','--help','This cruft') do
+          puts opts
+          exit
         end
       end
 
       opts.parse!(args)
+
+      if options.import
+        case options.import
+        when :nmap then
+          hosts = Nmap.from_xml(options.import_file)
+          puts "Success imported #{hosts.length} hosts."
+        end
+      else
+        if options.with_port
+          hosts = Port.all(:number => options.with_port).scanned(:status => :open).host
+        elsif options.with_service
+          hosts = Service.all(:name.like => "%#{options.with_service}%").scanned(:status => :open).host
+        else
+          hosts = Host.all
+        end
+
+        hosts.each { |host| puts host}
+      end
 
       return true
     end
