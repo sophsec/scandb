@@ -11,7 +11,7 @@ Hoe.new('scandb', ScanDB::VERSION) do |p|
     ['do_sqlite3', '>=0.9.3'],
     ['dm-core', '>=0.9.3'],
     ['dm-types', '>=0.9.3'],
-    ['libxml-ruby']
+    'libxml-ruby'
   ]
 end
 
