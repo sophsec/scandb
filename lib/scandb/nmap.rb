@@ -28,6 +28,8 @@ require 'libxml'
 
 module ScanDB
   module Nmap
+    include LibXML
+
     #
     # Imports scan information from a Nmap XML scan file, specified by
     # the _path_. Returns an Array of Host objects.
