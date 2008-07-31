@@ -1,6 +1,4 @@
-=== 1.0.0 / 2008-07-08
+=== 1.0.0 / 2008-07-31
 
-* 1 major enhancement
-
-  * Birthday!
+* Fixed a bug where LibXML wasn't being included for ScanDB::Nmap.
 
