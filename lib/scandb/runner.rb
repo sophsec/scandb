@@ -71,7 +71,15 @@ module ScanDB
         case options.import
         when :nmap then
           hosts = Nmap.from_xml(options.import_file)
-          puts "Success imported #{hosts.length} hosts."
+
+          case hosts.length
+          when 0
+            puts "No hosts where imported."
+          when 1
+            puts "Successfully imported #{hosts.length} host."
+          else
+            puts "Successfully imported #{hosts.length} hosts."
+          end
         end
       else
         if options.with_port
