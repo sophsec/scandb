@@ -47,8 +47,7 @@ module ScanDB
 
         host.find('hostname').each do |hostname|
           new_host.names << HostName.first_or_create(
-            :name => hostname['name'],
-            :host_id => new_host.id
+            :name => hostname['name']
           )
         end
 
@@ -60,9 +59,9 @@ module ScanDB
             :version => osclass['osgen']
           )
 
-          new_host.os_guesses << OSGuess.first_or_create(
-            :os_id => new_os.id,
-            :accuracy => osclass['accuracy'].to_i
+          new_host.os_guess(
+            :accuracy => osclass['accuracy'].to_i,
+            :os_id => new_os.id
           )
         end
 
@@ -76,7 +75,7 @@ module ScanDB
             :name => port.find_first('service[@name]')['name']
           )
 
-          new_host.scanned_ports << ScannedPort.first_or_create(
+          new_host.scanned_port(
             :status => port.find_first('state[@state]')['state'].to_sym,
             :service_id => new_service.id,
             :port_id => new_port.id,

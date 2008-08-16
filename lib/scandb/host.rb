@@ -46,6 +46,22 @@ module ScanDB
       names.first
     end
 
+    def os_guess(attribs)
+      unless os_guesses.first(attribs)
+        return (os_guesses << OSGuess.new(attribs))
+      end
+
+      return false
+    end
+
+    def scanned_port(attribs)
+      unless scanned_ports.first(attribs)
+        return (scanned_ports << ScannedPort.new(attribs))
+      end
+
+      return false
+    end
+
     def to_s
       ip
     end
