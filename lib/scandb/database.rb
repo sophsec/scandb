@@ -52,17 +52,28 @@ module ScanDB
     # exist.
     #
     def Database.config
-      if File.file?(CONFIG_FILE)
-        conf = YAML.load(CONFIG_FILE)
+      unless class_variable_defined?('@@scandb_database_config')
+        @@scandb_database_config = DEFAULT_CONFIG
 
-        unless (conf.kind_of?(Hash) || conf.kind_of?(String))
-          raise(InvalidDatabaseConfig,"#{CONFIG_FILE} must contain either a Hash or a String",caller)
+        if File.file?(CONFIG_FILE)
+          conf = YAML.load(CONFIG_FILE)
+
+          unless (conf.kind_of?(Hash) || conf.kind_of?(String))
+            raise(InvalidDatabaseConfig,"#{CONFIG_FILE} must contain either a Hash or a String",caller)
+          end
+
+          @@scandb_database_config = conf
         end
-
-        return conf
       end
 
-      return DEFAULT_CONFIG
+      return @@scandb_database_config ||= DEFAULT_CONFIG
+    end
+
+    #
+    # Sets the Database configuration to the specified _configuration_.
+    #
+    def Database.config=(configuration)
+      @@scandb_database_config = configuration
     end
 
     #
@@ -88,11 +99,22 @@ module ScanDB
     # _configuration is not given, +DEFAULT_CONFIG+ will be used to setup
     # the Database.
     #
-    def Database.setup(configuration=DEFAULT_CONFIG,&block)
+    def Database.setup(configuration=Database.config,&block)
       Database.setup_log
       DataMapper.setup(:default, configuration)
 
       block.call if block
+
+      # sourced from http://gist.github.com/3010
+      # in order to fix a has-many lazy-loading bug
+      # in dm-core <= 0.9.4
+      descendants = DataMapper::Resource.descendants.dup
+      descendants.each do |model|
+        descendants.merge(model.descendants) if model.respond_to?(:descendants)
+      end
+      descendants.each do |model|
+        model.relationships.each_value { |r| r.child_key if r.child_model == model }
+      end
 
       DataMapper.auto_upgrade!
       return nil
