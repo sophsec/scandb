@@ -21,7 +21,41 @@
 #++
 #
 
+require 'scandb/model'
+
 module ScanDB
-  # ScanDB version
-  VERSION = '0.1.1'
+  class OSClass
+
+    include Model
+
+    # The type of OS
+    property :type, String
+
+    # The vendor of the OS
+    property :vendor, String
+
+    # The family the OS belongs to
+    property :family, String
+
+    # The version of the OS
+    property :version, String
+
+    # The guesses for the OS Class.
+    has n, :guesses, :class_name => 'OSClassGuess'
+
+    #
+    # Returns the String form of the OS Class.
+    #
+    def to_s
+      vars = []
+
+      vars << "type=#{type}" if type
+      vars << "vendor=#{vendor}" if vendor
+      vars << "family=#{family}" if family
+      vars << "version=#{version}" if version
+
+      return vars.join(' ')
+    end
+
+  end
 end

@@ -33,12 +33,17 @@ module ScanDB
 
     include Model
 
+    # The scan status of the Port (<tt>:open</tt>, <tt>:filtered</tt>,
+    # <tt>:closed</tt>)
     property :status, Enum[:open, :filtered, :closed]
 
+    # The Service that is running on the scanned port
     belongs_to :service
 
+    # The Port
     belongs_to :port
 
+    # The Host that the scan was performed against
     belongs_to :host
 
     #

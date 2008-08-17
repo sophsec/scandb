@@ -21,7 +21,22 @@
 #++
 #
 
+require 'scandb/model'
+
 module ScanDB
-  # ScanDB version
-  VERSION = '0.1.1'
+  class OSMatch
+
+    include Model
+
+    # The name of the OS match
+    property :name, String
+
+    # The guesses for this OS match
+    has n, :guesses, :class_name => 'OSMatchGuess'
+
+    def to_s
+      name
+    end
+
+  end
 end
