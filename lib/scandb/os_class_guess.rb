@@ -42,7 +42,7 @@ module ScanDB
     # Returns the String form of the OS Class guess.
     #
     def to_s
-      "#{os_class} accuracy=#{accuracy}%"
+      "#{accuracy}%: #{os_class}"
     end
 
   end

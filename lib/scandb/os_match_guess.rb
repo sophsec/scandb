@@ -42,7 +42,7 @@ module ScanDB
     # Returns the String form of the OS Match guess.
     #
     def to_s
-      "#{os} accuracy=#{accuracy}%"
+      "#{accuracy}%: #{os_match}"
     end
 
   end
