@@ -22,6 +22,7 @@
 #
 
 require 'dm-core'
+require 'dm-serializer'
 
 module ScanDB
   module Model
