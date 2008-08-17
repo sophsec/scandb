@@ -22,19 +22,25 @@
 #
 
 require 'scandb/model'
-require 'scandb/os'
-require 'scandb/host'
 
 module ScanDB
-  class OSGuess
+  class OSClass
 
     include Model
 
-    property :accuracy, Integer
+    property :type, String
 
-    belongs_to :os, :class_name => 'OS'
+    property :vendor, String
 
-    belongs_to :host
+    property :family, String
+
+    property :version, String
+
+    has n, :guesses, :class_name => 'OSClassGuess'
+
+    def to_s
+      "#{vendor} #{family} type=#{type}, vendor=#{vendor}, family=#{family}, version=#{version}"
+    end
 
   end
 end

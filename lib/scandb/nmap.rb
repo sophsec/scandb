@@ -34,10 +34,10 @@ module ScanDB
     # Imports scan information from a Nmap XML scan file, specified by
     # the _path_. Returns an Array of Host objects.
     #
-    #   Nmap.from_xml('path/to/scan.xml')
+    #   Nmap.import_xml('path/to/scan.xml')
     #   # => [...]
     #
-    def Nmap.from_xml(path)
+    def Nmap.import_xml(path)
       doc = XML::Document.file(path)
       hosts = []
 
@@ -52,16 +52,29 @@ module ScanDB
         end
 
         host.find('os/osclass').each do |osclass|
-          new_os = OS.first_or_create(
+          new_os_class = OSClass.first_or_create(
             :type => osclass['type'],
             :vendor => osclass['vendor'],
             :family => osclass['osfamily'],
             :version => osclass['osgen']
           )
 
-          new_host.os_guess(
+          new_host.os_class_guesses.first_or_create(
             :accuracy => osclass['accuracy'].to_i,
-            :os_id => new_os.id
+            :os_class_id => new_os_class.id,
+            :host_id => new_host.id
+          )
+        end
+
+        host.find('os/osmatch').each do |osmatch|
+          new_os_match = OSMatch.first_or_create(
+            :name => osmatch['name']
+          )
+
+          new_host.os_match_guesses.first_or_create(
+            :accuracy => osmatch['accuracy'].to_i,
+            :os_match_id => new_os_match.id,
+            :host_id => new_host.id
           )
         end
 
@@ -75,7 +88,7 @@ module ScanDB
             :name => port.find_first('service[@name]')['name']
           )
 
-          new_host.scanned_port(
+          new_host.scanned_ports.first_or_create(
             :status => port.find_first('state[@state]')['state'].to_sym,
             :service_id => new_service.id,
             :port_id => new_port.id,

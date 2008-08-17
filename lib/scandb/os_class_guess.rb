@@ -21,58 +21,22 @@
 #++
 #
 
+require 'scandb/os_class'
 require 'scandb/model'
-require 'scandb/host_name'
-require 'scandb/os_class_guess'
-require 'scandb/os_match_guess'
-require 'scandb/scanned_port'
 
 module ScanDB
-  class Host
+  class OSClassGuess
 
     include Model
 
-    property :ip, String
+    property :accuracy, Integer
 
-    has n, :names, :class_name => 'HostName'
+    belongs_to :os_class, :class_name => 'OSClass'
 
-    has n, :os_class_guesses, :class_name => 'OSClassGuess'
-
-    has n, :os_match_guesses, :class_name => 'OSMatchGuess'
-
-    has n, :scanned_ports
-
-    #
-    # Returns the primary host name.
-    #
-    def host_name
-      names.first
-    end
-
-    def best_class_guess
-      os_class_guesses.first
-    end
-
-    def best_match_guess
-      os_match_guesses.first
-    end
-
-    def open_ports
-      scanned_ports.all(:status => :open)
-    end
-
-    alias ports open_ports
-
-    def filtered_ports
-      scanned_ports.all(:status => :filtered)
-    end
-
-    def closed_ports
-      scanned_ports.all(:status => :closed)
-    end
+    belongs_to :host
 
     def to_s
-      ip
+      "#{os_class} accuracy=#{accuracy}%"
     end
 
   end

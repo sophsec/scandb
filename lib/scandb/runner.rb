@@ -70,7 +70,7 @@ module ScanDB
       if options.import
         case options.import
         when :nmap then
-          hosts = Nmap.from_xml(options.import_file)
+          hosts = Nmap.import_xml(options.import_file)
 
           case hosts.length
           when 0
