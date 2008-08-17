@@ -45,7 +45,7 @@ module ScanDB
         ip = host.find_first("address[@addr and @addrtype='ipv4']")['addr']
         new_host = Host.first_or_create(:ip => ip)
 
-        host.find('hostname').each do |hostname|
+        host.find('hostnames/hostname').each do |hostname|
           new_host.names << HostName.first_or_create(
             :name => hostname['name']
           )
