@@ -1,4 +1,13 @@
-=== 1.0.0 / 2008-07-31
+=== 0.1.1 / 2008-08-17
+
+* Added a work-around to DataMappers current problem with lazy-loading
+  has-many relations.
+* Added various convenience methods.
+* Added the OSClass, OSClassGuess, OSMatch and OSMatchGuess models.
+* Require dm-serializer by default.
+* Added verbose and export options for the scandb utility.
+
+=== 0.1.0 / 2008-07-31
 
 * Fixed a bug where LibXML wasn't being included for ScanDB::Nmap.
 
