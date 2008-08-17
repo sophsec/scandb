@@ -35,16 +35,16 @@ module ScanDB
     # The IP address of the Host
     property :ip, String
 
-    # The HostNames of the host
+    # The host-names of the host
     has n, :names, :class_name => 'HostName'
 
-    # The OSClassGuesses of the host
+    # The OS Class guesses of the host
     has n, :os_class_guesses, :class_name => 'OSClassGuess'
 
-    # The OSMatchGuesses of the host
+    # The OS Match guesses of the host
     has n, :os_match_guesses, :class_name => 'OSMatchGuess'
 
-    # The ScannedPorts of the host
+    # The scanned ports of the host
     has n, :scanned_ports
 
     #

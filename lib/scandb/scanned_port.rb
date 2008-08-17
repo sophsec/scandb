@@ -33,7 +33,7 @@ module ScanDB
 
     include Model
 
-    # The scan status of the port (<tt>:open</tt>, <tt>:filtered</tt>,
+    # The scan status of the Port (<tt>:open</tt>, <tt>:filtered</tt>,
     # <tt>:closed</tt>)
     property :status, Enum[:open, :filtered, :closed]
 

@@ -39,13 +39,13 @@ module ScanDB
     # The port number
     property :number, Integer
 
-    # The ScannedPorts related to this port
+    # The scanned ports related to this port
     has n, :scanned, :class_name => 'ScannedPort'
 
-    # The Hosts which were scanned for this port
+    # The hosts which were scanned for this port
     has n, :hosts, :through => :scanned
 
-    # The Services that were found running on this port
+    # The services that were found running on this port
     has n, :services, :through => :scanned
 
     #
