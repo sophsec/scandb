@@ -28,16 +28,24 @@ module ScanDB
 
     include Model
 
+    # The type of OS
     property :type, String
 
+    # The vendor of the OS
     property :vendor, String
 
+    # The family the OS belongs to
     property :family, String
 
+    # The version of the OS
     property :version, String
 
+    # The guesses for the OS Class.
     has n, :guesses, :class_name => 'OSClassGuess'
 
+    #
+    # Returns the String form of the OS Class.
+    #
     def to_s
       "#{vendor} #{family} type=#{type}, vendor=#{vendor}, family=#{family}, version=#{version}"
     end

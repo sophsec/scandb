@@ -28,8 +28,10 @@ module ScanDB
 
     include Model
 
+    # The name of the OS match
     property :name, String
 
+    # The guesses for this OS match
     has n, :guesses, :class_name => 'OSMatchGuess'
 
     def to_s

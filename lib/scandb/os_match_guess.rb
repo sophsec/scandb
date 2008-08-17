@@ -29,12 +29,18 @@ module ScanDB
 
     include Model
 
+    # The accuracy of the guess
     property :accuracy, Integer
 
+    # The OS Match for the guess
     belongs_to :os_match, :class_name => 'OSMatch'
 
+    # The Host that the guess was made against
     belongs_to :host
 
+    #
+    # Returns the String form of the OS Match guess.
+    #
     def to_s
       "#{os} accuracy=#{accuracy}%"
     end

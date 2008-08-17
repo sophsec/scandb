@@ -32,14 +32,20 @@ module ScanDB
 
     include Model
 
+    # The protocol that the port is runnin on
+    # (<tt>:tcp</tt>, <tt>:udp</tt>)
     property :protocol, Enum[:tcp, :udp]
 
+    # The port number
     property :number, Integer
 
+    # The ScannedPorts related to this port
     has n, :scanned, :class_name => 'ScannedPort'
 
+    # The Hosts which were scanned for this port
     has n, :hosts, :through => :scanned
 
+    # The Services that were found running on this port
     has n, :services, :through => :scanned
 
     #
