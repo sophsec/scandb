@@ -47,7 +47,14 @@ module ScanDB
     # Returns the String form of the OS Class.
     #
     def to_s
-      "#{vendor} #{family} type=#{type}, vendor=#{vendor}, family=#{family}, version=#{version}"
+      vars = []
+
+      vars << "type=#{type}" if type
+      vars << "vendor=#{vendor}" if vendor
+      vars << "family=#{family}" if family
+      vars << "version=#{version}" if version
+
+      return vars.join(' ')
     end
 
   end
