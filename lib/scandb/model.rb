@@ -21,6 +21,8 @@
 #++
 #
 
+require 'scandb/database'
+
 require 'dm-core'
 require 'dm-serializer'
 
@@ -28,10 +30,17 @@ module ScanDB
   module Model
     include DataMapper::Types
 
+    # Name of the DataMapper repository
+    REPOSITORY_NAME = :scandb
+
     def self.included(base)
       base.module_eval do
         include DataMapper::Resource
         include DataMapper::AutoMigrations
+
+        def self.default_repository_name
+          Model::REPOSITORY_NAME
+        end
 
         property :id, Serial
       end

@@ -39,14 +39,14 @@ module ScanDB
     # Database configuration file
     CONFIG_FILE = File.join(Config::PATH,'database.yml')
 
-    # Default database configuration
-    DEFAULT_CONFIG = "sqlite3://" + File.join(Config::PATH,'scandb.db')
-
     # Default log path
     DEFAULT_LOG_PATH = File.join(Config::PATH,'scandb.log')
 
     # Default log level
     DEFAULT_LOG_LEVEL = :info
+
+    # Default database configuration
+    DEFAULT_CONFIG = "sqlite3://" + File.join(Config::PATH,'scandb.db')
 
     #
     # Returns the Database configuration that is stored in the
@@ -103,7 +103,7 @@ module ScanDB
     #
     def Database.setup(configuration=Database.config,&block)
       Database.setup_log
-      DataMapper.setup(:default, configuration)
+      DataMapper.setup(Model::REPOSITORY_NAME, configuration)
 
       block.call if block
 
@@ -118,10 +118,8 @@ module ScanDB
         model.relationships.each_value { |r| r.child_key if r.child_model == model }
       end
 
-      DataMapper.auto_upgrade!
+      DataMapper.auto_upgrade!(Model::REPOSITORY_NAME)
       return nil
     end
-
-    Database.setup
   end
 end
