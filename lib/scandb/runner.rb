@@ -98,18 +98,24 @@ module ScanDB
 
       opts.parse!(args)
 
+      Database.setup(options.database || Database.config)
+
       if options.import
         case options.import
         when :nmap then
-          hosts = Nmap.import_xml(options.import_file)
+          hosts = Nmap.import_xml(options.import_file) do |host|
+            if options.verbose
+              puts ">>> Imported #{host.ip}"
+            end
+          end
 
-          case hosts.length
+          case hosts
           when 0
             puts "No hosts where imported."
           when 1
-            puts "Imported #{hosts.length} host."
+            puts "Imported #{hosts} host."
           else
-            puts "Imported #{hosts.length} hosts."
+            puts "Imported #{hosts} hosts."
           end
         end
       else
