@@ -40,7 +40,7 @@ module ScanDB
     CONFIG_FILE = File.join(Config::PATH,'database.yml')
 
     # Default log path
-    DEFAULT_LOG_PATH = File.join(Config::PATH,'scandb.log')
+    DEFAULT_LOG_PATH = File.join(Config::PATH,'database.log')
 
     # Default log level
     DEFAULT_LOG_LEVEL = :info
@@ -79,6 +79,13 @@ module ScanDB
     end
 
     #
+    # Returns the current Database log.
+    #
+    def Database.log
+      @@scandb_database_log ||= nil
+    end
+
+    #
     # Setup the Database log with the given _options_.
     #
     # _options_ may contain the following keys:
@@ -92,8 +99,7 @@ module ScanDB
       stream = (options[:stream] || File.new(path,'w+'))
       level = (options[:level] || DEFAULT_LOG_LEVEL)
 
-      DataMapper::Logger.new(stream,level)
-      return nil
+      return @@scandb_database_log = DataMapper::Logger.new(stream,level)
     end
 
     #
@@ -102,7 +108,10 @@ module ScanDB
     # the Database.
     #
     def Database.setup(configuration=Database.config,&block)
-      Database.setup_log
+      # setup the logging
+      Database.setup_log unless Database.log
+
+      # setup the repository
       DataMapper.setup(Model::REPOSITORY_NAME, configuration)
 
       block.call if block
