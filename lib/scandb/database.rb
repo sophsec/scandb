@@ -43,7 +43,7 @@ module ScanDB
     DEFAULT_LOG_PATH = File.join(Config::PATH,'database.log')
 
     # Default log level
-    DEFAULT_LOG_LEVEL = :info
+    DEFAULT_LOG_LEVEL = :error
 
     # Default database configuration
     DEFAULT_CONFIG = {
