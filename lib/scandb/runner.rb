@@ -36,7 +36,11 @@ module ScanDB
       options = OpenStruct.new
 
       opts = OptionParser.new do |opts|
-        opts.banner = 'usage: scandb [-v] [-d URI] [--import-nmap FILE | -L | -p PORT | -s NAME]'
+        opts.banner = 'usage: scandb [-v] [-l FILE] [-d URI] [--import-nmap FILE | -L | -p PORT | -s NAME]'
+
+        opts.on('-l','--log FILE','The FILE to use for logging Database activity.','Defaults to ~/.scandb/database.log') do |file|
+          options.log = file
+        end
 
         opts.on('-d','--database URI','The URI for the Database.','Defaults to ~/.scandb/scandb.db') do |uri|
           options.database = uri
@@ -97,6 +101,10 @@ module ScanDB
       end
 
       opts.parse!(args)
+
+      if options.log
+        Database.setup_log(:path => options.log)
+      end
 
       Database.setup(options.database || Database.config)
 
