@@ -46,7 +46,10 @@ module ScanDB
     DEFAULT_LOG_LEVEL = :info
 
     # Default database configuration
-    DEFAULT_CONFIG = "sqlite3://" + File.join(Config::PATH,'scandb.db')
+    DEFAULT_CONFIG = {
+      :adapter => :sqlite3,
+      :database => File.join(Config::PATH,'scandb.db')
+    }
 
     #
     # Returns the Database configuration that is stored in the
