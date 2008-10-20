@@ -1,3 +1,11 @@
+=== 0.1.2 / 2008-10-19
+
+* Have ScanDB use it's own DataMapper Repository name-space to avoid
+  conflicts with other DataMapper libraries.
+* Bug fix for Runner.command_line, where it was not setting up the DataMapper
+  repository.
+* Minor performance improvement for Nmap.import_xml.
+
 === 0.1.1 / 2008-08-17
 
 * Added a work-around to DataMappers current problem with lazy-loading
