@@ -40,7 +40,7 @@ module ScanDB
     #
     def Nmap.import_xml(path,&block)
       doc = XML::Document.file(path)
-      hosts = []
+      host_count = 0
 
       doc.find("/nmaprun/host[status[@state='up']]").each do |host|
         ip = host.find_first("address[@addr and @addrtype='ipv4']")['addr']
@@ -98,12 +98,12 @@ module ScanDB
         end
 
         new_host.save
+        host_count += 1
 
         block.call(new_host) if block
-        hosts << new_host
       end
 
-      return hosts
+      return host_count
     end
   end
 end
