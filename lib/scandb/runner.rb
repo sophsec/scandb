@@ -55,7 +55,7 @@ module ScanDB
           options.log[:level] = :off
         end
 
-        opts.on('-d','--database URI','The URI for the Database.','Defaults to ~/.scandb/scandb.db') do |uri|
+        opts.on('-d','--database URI','The URI for the Database.') do |uri|
           options.database = uri
         end
 
