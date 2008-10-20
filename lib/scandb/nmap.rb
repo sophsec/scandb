@@ -32,11 +32,12 @@ module ScanDB
 
     #
     # Imports scan information from a Nmap XML scan file, specified by
-    # the _path_. Returns an Array of Host objects. If a _block_ is given
-    # it will be passed the newly created Host object.
+    # the _path_. Returns the total number of Host objects that were
+    # imported. If a _block_ is given it will be passed the newly created
+    # Host object.
     #
     #   Nmap.import_xml('path/to/scan.xml')
-    #   # => [...]
+    #   # => 124
     #
     def Nmap.import_xml(path,&block)
       doc = XML::Document.file(path)
