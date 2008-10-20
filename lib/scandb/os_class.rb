@@ -22,37 +22,39 @@
 #
 
 require 'scandb/model'
-require 'scandb/host'
-require 'scandb/service'
-
-require 'dm-types/enum'
 
 module ScanDB
-  class Port
+  class OSClass
 
     include Model
 
-    # The protocol that the port is runnin on
-    # (<tt>:tcp</tt>, <tt>:udp</tt>)
-    property :protocol, Enum[:tcp, :udp]
+    # The type of OS
+    property :type, String
 
-    # The port number
-    property :number, Integer
+    # The vendor of the OS
+    property :vendor, String
 
-    # The scanned ports related to this port
-    has n, :scanned, :class_name => 'ScannedPort'
+    # The family the OS belongs to
+    property :family, String
 
-    # The hosts which were scanned for this port
-    has n, :hosts, :through => :scanned
+    # The version of the OS
+    property :version, String
 
-    # The services that were found running on this port
-    has n, :services, :through => :scanned
+    # The guesses for the OS Class.
+    has n, :guesses, :class_name => 'OSClassGuess'
 
     #
-    # Returns the String form of the port.
+    # Returns the String form of the OS Class.
     #
     def to_s
-      "#{number}/#{protocol}"
+      vars = []
+
+      vars << "type=#{type}" if type
+      vars << "vendor=#{vendor}" if vendor
+      vars << "family=#{family}" if family
+      vars << "version=#{version}" if version
+
+      return vars.join(' ')
     end
 
   end

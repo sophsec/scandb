@@ -28,39 +28,54 @@ require 'libxml'
 
 module ScanDB
   module Nmap
+    include LibXML
+
     #
     # Imports scan information from a Nmap XML scan file, specified by
-    # the _path_. Returns an Array of Host objects.
+    # the _path_. Returns an Array of Host objects. If a _block_ is given
+    # it will be passed the newly created Host object.
     #
-    #   Nmap.from_xml('path/to/scan.xml')
+    #   Nmap.import_xml('path/to/scan.xml')
     #   # => [...]
     #
-    def Nmap.from_xml(path)
+    def Nmap.import_xml(path,&block)
       doc = XML::Document.file(path)
-      hosts = []
+      host_count = 0
 
       doc.find("/nmaprun/host[status[@state='up']]").each do |host|
         ip = host.find_first("address[@addr and @addrtype='ipv4']")['addr']
         new_host = Host.first_or_create(:ip => ip)
 
-        host.find('hostname').each do |hostname|
+        host.find('hostnames/hostname').each do |hostname|
           new_host.names << HostName.first_or_create(
-            :name => hostname['name'],
-            :host_id => new_host.id
+            :name => hostname['name']
           )
         end
 
         host.find('os/osclass').each do |osclass|
-          new_os = OS.first_or_create(
+          new_os_class = OSClass.first_or_create(
             :type => osclass['type'],
             :vendor => osclass['vendor'],
             :family => osclass['osfamily'],
             :version => osclass['osgen']
           )
 
-          new_host.os_guesses << OSGuess.first_or_create(
-            :os_id => new_os.id,
-            :accuracy => osclass['accuracy'].to_i
+          new_host.os_class_guesses.first_or_create(
+            :accuracy => osclass['accuracy'].to_i,
+            :os_class_id => new_os_class.id,
+            :host_id => new_host.id
+          )
+        end
+
+        host.find('os/osmatch').each do |osmatch|
+          new_os_match = OSMatch.first_or_create(
+            :name => osmatch['name']
+          )
+
+          new_host.os_match_guesses.first_or_create(
+            :accuracy => osmatch['accuracy'].to_i,
+            :os_match_id => new_os_match.id,
+            :host_id => new_host.id
           )
         end
 
@@ -74,7 +89,7 @@ module ScanDB
             :name => port.find_first('service[@name]')['name']
           )
 
-          new_host.scanned_ports << ScannedPort.first_or_create(
+          new_host.scanned_ports.first_or_create(
             :status => port.find_first('state[@state]')['state'].to_sym,
             :service_id => new_service.id,
             :port_id => new_port.id,
@@ -83,11 +98,12 @@ module ScanDB
         end
 
         new_host.save
+        host_count += 1
 
-        hosts << new_host
+        block.call(new_host) if block
       end
 
-      return hosts
+      return host_count
     end
   end
 end

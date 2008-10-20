@@ -21,39 +21,8 @@
 #++
 #
 
-require 'scandb/model'
-require 'scandb/host'
-require 'scandb/service'
-
-require 'dm-types/enum'
+require 'scandb/database'
 
 module ScanDB
-  class Port
-
-    include Model
-
-    # The protocol that the port is runnin on
-    # (<tt>:tcp</tt>, <tt>:udp</tt>)
-    property :protocol, Enum[:tcp, :udp]
-
-    # The port number
-    property :number, Integer
-
-    # The scanned ports related to this port
-    has n, :scanned, :class_name => 'ScannedPort'
-
-    # The hosts which were scanned for this port
-    has n, :hosts, :through => :scanned
-
-    # The services that were found running on this port
-    has n, :services, :through => :scanned
-
-    #
-    # Returns the String form of the port.
-    #
-    def to_s
-      "#{number}/#{protocol}"
-    end
-
-  end
+  Database.setup
 end

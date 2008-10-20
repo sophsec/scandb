@@ -1,6 +1,7 @@
 = ScanDB
 
-* http://rubyforge.org/projects/scandb/
+* http://scandb.rubyforge.org/
+* Postmodern Modulus III (postmodern.mod3 at gmail.com)
 
 == DESCRIPTION:
 

@@ -36,18 +36,156 @@ module ScanDB
       options = OpenStruct.new
 
       opts = OptionParser.new do |opts|
-        opts.banner = 'usage: scandb [options] [FILE]'
+        opts.banner = 'usage: scandb [-v] [-d URI] [--import-nmap FILE | -L | -p PORT | -s NAME]'
 
-        opts.on('-d','--database','URI',"The URI for the Database. Defaults to #{Database::DEFAULT_CONFIG}") do |uri|
+        opts.on('-d','--database URI','The URI for the Database.','Defaults to ~/.scandb/scandb.db') do |uri|
           options.database = uri
         end
 
-        opts.on('--import-nmap','FILE','Import a Nmap XML scan file') do |file|
-          options.nmap_file = file
+        opts.on('--import-nmap FILE','Import a Nmap XML scan file') do |file|
+          options.import = :nmap
+          options.import_file = file
+        end
+
+        opts.on('-L','--list-hosts','List all hosts within ScanDB') do
+          options.list_hosts = true
+        end
+
+        opts.on('-p','--with-port PORT','List hosts with the specified open PORT') do |port|
+          options.with_port = port.to_i
+        end
+
+        opts.on('--with-open-ports','List hosts with open ports') do
+          options.with_port_status = :open
+        end
+
+        opts.on('--with-filtered-ports','List hosts with filtered ports') do
+          options.with_port_status = :filtered
+        end
+
+        opts.on('--with-closed-ports','List hosts with closed ports') do
+          options.with_port_status = :closed
+        end
+
+        opts.on('-s','--with-service NAME','List hosts with the specified service') do |name|
+          options.with_service = name
+        end
+
+        opts.on('--export-yaml FILE','Exports hosts as a YAML file') do |path|
+          options.export = :yaml
+          options.export_path = path
+        end
+
+        opts.on('--export-xml FILE','Exports hosts as a XML file') do |path|
+          options.export = :xml
+          options.export_path = path
+        end
+
+        opts.on('-v','--verbose','Increase verbosity of output') do
+          options.verbose = true
+        end
+
+        opts.on('-V','--version','Print ScanDB version and exit') do
+          puts ScanDB::Version
+          exit
+        end
+
+        opts.on('-h','--help','This cruft') do
+          puts opts
+          exit
         end
       end
 
       opts.parse!(args)
+
+      Database.setup(options.database || Database.config)
+
+      if options.import
+        case options.import
+        when :nmap then
+          hosts = Nmap.import_xml(options.import_file) do |host|
+            if options.verbose
+              puts ">>> Imported #{host.ip}"
+            end
+          end
+
+          case hosts
+          when 0
+            puts "No hosts where imported."
+          when 1
+            puts "Imported #{hosts} host."
+          else
+            puts "Imported #{hosts} hosts."
+          end
+        end
+      else
+        if options.with_port
+          hosts = Port.all(:number => options.with_port).scanned(:status => :open).host
+        elsif options.with_service
+          hosts = Service.all(:name.like => "%#{options.with_service}%").scanned(:status => :open).host
+        else
+          hosts = Host.all
+        end
+
+        if options.export
+          File.open(options.export_path,'w') do |output|
+            case options.export
+            when :yaml
+              output.write(hosts.to_yaml)
+            when :xml
+              output.write(hosts.to_xml)
+            end
+          end
+        else
+          hosts.each do |host|
+            if options.verbose
+              print "[ #{host} ]\n\n"
+
+              unless host.names.empty?
+                puts '  Host names:'
+
+                host.names.each do |name|
+                  puts "    #{name}"
+                end
+
+                print "\n"
+              end
+
+              unless host.os_class_guesses.empty?
+                puts '  OS Classes:'
+
+                host.os_class_guesses.each do |guess|
+                  puts "    #{guess}"
+                end
+
+                print "\n"
+              end
+
+              unless host.os_match_guesses.empty?
+                puts '  OS Matches:'
+
+                host.os_match_guesses.each do |guess|
+                  puts "    #{guess}"
+                end
+
+                print "\n"
+              end
+
+              unless host.scanned_ports.empty?
+                puts "  Scanned Ports:"
+
+                host.scanned_ports.each do |scanned_port|
+                  puts "  #{scanned_port}"
+                end
+
+                print "\n"
+              end
+            else
+              puts host
+            end
+          end
+        end
+      end
 
       return true
     end
