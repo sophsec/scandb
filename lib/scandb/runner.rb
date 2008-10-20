@@ -34,12 +34,25 @@ module ScanDB
     #
     def Runner.command_line(args)
       options = OpenStruct.new
+      options.log = {}
 
       opts = OptionParser.new do |opts|
         opts.banner = 'usage: scandb [-v] [-l FILE] [-d URI] [--import-nmap FILE | -L | -p PORT | -s NAME]'
 
         opts.on('-l','--log FILE','The FILE to use for logging Database activity.','Defaults to ~/.scandb/database.log') do |file|
-          options.log = file
+          options.log[:path] = file
+        end
+
+        opts.on('--log-level LEVEL','Specifies the log-level.','Defaults to info') do |level|
+          options.log[:level] = level.to_sym
+        end
+
+        opts.on('--log-stdout','Send log messages to stdout') do
+          options.log[:stream] = STDOUT
+        end
+
+        opts.on('--disable-log','Alias for --log-level off') do
+          options.log[:level] = :off
         end
 
         opts.on('-d','--database URI','The URI for the Database.','Defaults to ~/.scandb/scandb.db') do |uri|
@@ -102,8 +115,8 @@ module ScanDB
 
       opts.parse!(args)
 
-      if options.log
-        Database.setup_log(:path => options.log)
+      unless options.log.empty?
+        Database.setup_log(options.log)
       end
 
       Database.setup(options.database || Database.config)
