@@ -28,7 +28,7 @@ module ScanDB
 
     include Model
 
-    property :name, Text
+    property :name, Text, :index => true
 
     belongs_to :host
 

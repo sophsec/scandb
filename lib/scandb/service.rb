@@ -31,7 +31,7 @@ module ScanDB
     include Model
 
     # Name of the service
-    property :name, String
+    property :name, String, :index => true
 
     # Scanned ports that were found to be running the service
     has n, :scanned, :class_name => 'ScannedPort'

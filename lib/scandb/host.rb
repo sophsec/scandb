@@ -33,7 +33,7 @@ module ScanDB
     include Model
 
     # The IP address of the Host
-    property :ip, String
+    property :ip, String, :index => true
 
     # The host-names of the host
     has n, :names, :class_name => 'HostName'

@@ -37,7 +37,7 @@ module ScanDB
     property :protocol, Enum[:tcp, :udp]
 
     # The port number
-    property :number, Integer
+    property :number, Integer, :index => true
 
     # The scanned ports related to this port
     has n, :scanned, :class_name => 'ScannedPort'

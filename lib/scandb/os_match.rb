@@ -29,7 +29,7 @@ module ScanDB
     include Model
 
     # The name of the OS match
-    property :name, String
+    property :name, String, :index => true
 
     # The guesses for this OS match
     has n, :guesses, :class_name => 'OSMatchGuess'
