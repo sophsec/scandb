@@ -28,7 +28,11 @@ module ScanDB
 
     include Model
 
-    property :name, Text, :index => true
+    # The host name
+    property :name, String, :index => true
+
+    # The Date and Time at which the host-name was first scanned
+    property :scanned_at, DateTime
 
     belongs_to :host
 

@@ -32,6 +32,9 @@ module ScanDB
     # The accuracy of the guess
     property :accuracy, Integer
 
+    # The Date and Time when the OSMatch was first guessed
+    property :scanned_at, DateTime
+
     # The OS Match for the guess
     belongs_to :os_match, :class_name => 'OSMatch'
 

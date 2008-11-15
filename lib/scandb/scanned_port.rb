@@ -37,6 +37,9 @@ module ScanDB
     # <tt>:closed</tt>)
     property :status, Enum[:open, :filtered, :closed]
 
+    # The Date and Time at which the port was first scanned
+    property :scanned_at, DateTime
+
     # The Service that is running on the scanned port
     belongs_to :service
 

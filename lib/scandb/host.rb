@@ -35,14 +35,23 @@ module ScanDB
     # The IP address of the Host
     property :ip, String, :index => true
 
+    # The Date and Time at which the host was first scanned
+    property :scanned_at, DateTime
+
     # The host-names of the host
-    has n, :names, :class_name => 'HostName'
+    has n, :names,
+           :order => [:scanned_at.desc],
+           :class_name => 'HostName'
 
     # The OS Class guesses of the host
-    has n, :os_class_guesses, :class_name => 'OSClassGuess'
+    has n, :os_class_guesses,
+           :order => [:scanned_at.desc],
+           :class_name => 'OSClassGuess'
 
     # The OS Match guesses of the host
-    has n, :os_match_guesses, :class_name => 'OSMatchGuess'
+    has n, :os_match_guesses,
+           :order => [:scanned_at.desc],
+           :class_name => 'OSMatchGuess'
 
     # The scanned ports of the host
     has n, :scanned_ports
