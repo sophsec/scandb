@@ -38,11 +38,11 @@ module ScanDB
         include DataMapper::Resource
         include DataMapper::AutoMigrations
 
+        property :id, Serial
+
         def self.default_repository_name
           Model::REPOSITORY_NAME
         end
-
-        property :id, Serial
       end
     end
   end
