@@ -39,6 +39,10 @@ module ScanDB
     #   Nmap.import_xml('path/to/scan.xml')
     #   # => 124
     #
+    #   Nmap.import_xml('path/to/scan.xml') do |host|
+    #     puts host.ip
+    #   end
+    #
     def Nmap.import_xml(path,&block)
       doc = XML::Document.file(path)
       host_count = 0
