@@ -1,3 +1,8 @@
+=== 0.1.3 / 2009-01-09
+
+* Fixed a bug where 'dm-types' was being required multiple times, causing
+  conflicting class definitions.
+
 === 0.1.2 / 2008-10-19
 
 * Have ScanDB use it's own DataMapper Repository name-space to avoid
