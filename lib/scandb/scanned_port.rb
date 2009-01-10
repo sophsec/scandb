@@ -26,19 +26,25 @@ require 'scandb/service'
 require 'scandb/port'
 require 'scandb/host'
 
-require 'dm-types/enum'
-
 module ScanDB
   class ScannedPort
 
     include Model
 
+    # The scan status of the Port (<tt>:open</tt>, <tt>:filtered</tt>,
+    # <tt>:closed</tt>)
     property :status, Enum[:open, :filtered, :closed]
 
+    # The Date and Time at which the port was first scanned
+    property :scanned_at, DateTime
+
+    # The Service that is running on the scanned port
     belongs_to :service
 
+    # The Port
     belongs_to :port
 
+    # The Host that the scan was performed against
     belongs_to :host
 
     #

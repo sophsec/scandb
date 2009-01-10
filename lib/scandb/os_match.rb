@@ -22,19 +22,21 @@
 #
 
 require 'scandb/model'
-require 'scandb/os'
-require 'scandb/host'
 
 module ScanDB
-  class OSGuess
+  class OSMatch
 
     include Model
 
-    property :accuracy, Integer
+    # The name of the OS match
+    property :name, String, :index => true
 
-    belongs_to :os, :class_name => 'OS'
+    # The guesses for this OS match
+    has n, :guesses, :class_name => 'OSMatchGuess'
 
-    belongs_to :host
+    def to_s
+      name
+    end
 
   end
 end

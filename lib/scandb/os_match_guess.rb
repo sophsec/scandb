@@ -21,30 +21,32 @@
 #++
 #
 
-require 'scandb/database'
-
-require 'dm-core'
-require 'dm-types'
-require 'dm-serializer'
+require 'scandb/os_match'
+require 'scandb/model'
 
 module ScanDB
-  module Model
-    include DataMapper::Types
+  class OSMatchGuess
 
-    # Name of the DataMapper repository
-    REPOSITORY_NAME = :scandb
+    include Model
 
-    def self.included(base)
-      base.module_eval do
-        include DataMapper::Resource
-        include DataMapper::AutoMigrations
+    # The accuracy of the guess
+    property :accuracy, Integer
 
-        property :id, Serial
+    # The Date and Time when the OSMatch was first guessed
+    property :scanned_at, DateTime
 
-        def self.default_repository_name
-          Model::REPOSITORY_NAME
-        end
-      end
+    # The OS Match for the guess
+    belongs_to :os_match, :class_name => 'OSMatch'
+
+    # The Host that the guess was made against
+    belongs_to :host
+
+    #
+    # Returns the String form of the OS Match guess.
+    #
+    def to_s
+      "#{accuracy}%: #{os_match}"
     end
+
   end
 end

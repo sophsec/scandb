@@ -23,18 +23,19 @@
 
 require 'scandb/model'
 
-require 'dm-types/enum'
-
 module ScanDB
   class Service
 
     include Model
 
-    property :name, String
+    # Name of the service
+    property :name, String, :index => true
 
-    has n, :ports, :class_name => 'ScannedPort'
+    # Scanned ports that were found to be running the service
+    has n, :scanned, :class_name => 'ScannedPort'
 
-    has n, :hosts, :through => :ports
+    # Hosts that were found to be running the service
+    has n, :hosts, :through => :scanned
 
     #
     # Returns the String form of the service.

@@ -11,10 +11,15 @@ lib/scandb/model.rb
 lib/scandb/port.rb
 lib/scandb/service.rb
 lib/scandb/scanned_port.rb
-lib/scandb/os.rb
-lib/scandb/os_guess.rb
+lib/scandb/os_class.rb
+lib/scandb/os_class_guess.rb
+lib/scandb/os_match.rb
+lib/scandb/os_match_guess.rb
 lib/scandb/host_name.rb
 lib/scandb/host.rb
+lib/scandb/persistence.rb
+lib/scandb/nmap.rb
+lib/scandb/runner.rb
 lib/scandb/scandb.rb
 lib/scandb/version.rb
 lib/scandb.rb

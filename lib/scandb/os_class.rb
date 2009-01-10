@@ -21,30 +21,41 @@
 #++
 #
 
-require 'scandb/database'
-
-require 'dm-core'
-require 'dm-types'
-require 'dm-serializer'
+require 'scandb/model'
 
 module ScanDB
-  module Model
-    include DataMapper::Types
+  class OSClass
 
-    # Name of the DataMapper repository
-    REPOSITORY_NAME = :scandb
+    include Model
 
-    def self.included(base)
-      base.module_eval do
-        include DataMapper::Resource
-        include DataMapper::AutoMigrations
+    # The type of OS
+    property :type, String
 
-        property :id, Serial
+    # The vendor of the OS
+    property :vendor, String
 
-        def self.default_repository_name
-          Model::REPOSITORY_NAME
-        end
-      end
+    # The family the OS belongs to
+    property :family, String
+
+    # The version of the OS
+    property :version, String
+
+    # The guesses for the OS Class.
+    has n, :guesses, :class_name => 'OSClassGuess'
+
+    #
+    # Returns the String form of the OS Class.
+    #
+    def to_s
+      vars = []
+
+      vars << "type=#{type}" if type
+      vars << "vendor=#{vendor}" if vendor
+      vars << "family=#{family}" if family
+      vars << "version=#{version}" if version
+
+      return vars.join(' ')
     end
+
   end
 end

@@ -21,22 +21,32 @@
 #++
 #
 
+require 'scandb/os_class'
 require 'scandb/model'
 
 module ScanDB
-  class OS
+  class OSClassGuess
 
     include Model
 
-    property :type, String
+    # The accuracy of the guess
+    property :accuracy, Integer
 
-    property :vendor, String
+    # The Date and Time when the OSClass was first guessed
+    property :scanned_at, DateTime
 
-    property :family, String
+    # The OS Class
+    belongs_to :os_class, :class_name => 'OSClass'
 
-    property :version, String
+    # The Host that the guess was made against
+    belongs_to :host
 
-    has n, :os_guesses, :class_name => 'OSGuess'
+    #
+    # Returns the String form of the OS Class guess.
+    #
+    def to_s
+      "#{accuracy}%: #{os_class}"
+    end
 
   end
 end
