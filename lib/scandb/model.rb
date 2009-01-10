@@ -24,6 +24,7 @@
 require 'scandb/database'
 
 require 'dm-core'
+require 'dm-types'
 require 'dm-serializer'
 
 module ScanDB

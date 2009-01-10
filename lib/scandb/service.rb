@@ -23,8 +23,6 @@
 
 require 'scandb/model'
 
-require 'dm-types/enum'
-
 module ScanDB
   class Service
 

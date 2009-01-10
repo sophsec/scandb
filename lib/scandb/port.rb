@@ -25,8 +25,6 @@ require 'scandb/model'
 require 'scandb/host'
 require 'scandb/service'
 
-require 'dm-types/enum'
-
 module ScanDB
   class Port
 
