@@ -32,7 +32,9 @@ module ScanDB
     property :name, String, :index => true
 
     # The guesses for this OS match
-    has n, :guesses, :class_name => 'OSMatchGuess'
+    has n, :guesses,
+           :child_key => [:os_match_id],
+           :class_name => 'OSMatchGuess'
 
     def to_s
       name

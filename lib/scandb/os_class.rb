@@ -41,7 +41,9 @@ module ScanDB
     property :version, String
 
     # The guesses for the OS Class.
-    has n, :guesses, :class_name => 'OSClassGuess'
+    has n, :guesses,
+           :child_key => [:os_class_id],
+           :class_name => 'OSClassGuess'
 
     #
     # Returns the String form of the OS Class.
