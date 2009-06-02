@@ -9,10 +9,10 @@ Hoe.new('scandb', ScanDB::VERSION) do |p|
   p.developer('Postmodern', 'postmodern.mod3@gmail.com')
   p.remote_rdoc_dir = ''
   p.extra_deps = [
-    ['do_sqlite3', '>=0.9.9'],
-    ['dm-core', '>=0.9.9'],
-    ['dm-types', '>=0.9.9'],
-    ['dm-serializer','>=0.9.9'],
+    ['do_sqlite3', '>=0.9.13'],
+    ['dm-core', '>=0.10.0'],
+    ['dm-types', '>=0.10.0'],
+    ['dm-serializer','>=0.10.0'],
     'libxml-ruby'
   ]
 end
