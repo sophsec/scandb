@@ -37,7 +37,7 @@ module ScanDB
     def self.included(base)
       base.module_eval do
         include DataMapper::Resource
-        include DataMapper::AutoMigrations
+        include DataMapper::Migrations
 
         property :id, Serial
 
