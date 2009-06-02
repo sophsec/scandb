@@ -38,7 +38,7 @@ module ScanDB
     property :number, Integer, :index => true
 
     # The scanned ports related to this port
-    has n, :scanned, :class_name => 'ScannedPort'
+    has n, :scanned, :model => 'ScannedPort'
 
     # The hosts which were scanned for this port
     has n, :hosts, :through => :scanned

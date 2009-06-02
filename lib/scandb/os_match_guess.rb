@@ -36,7 +36,7 @@ module ScanDB
     property :scanned_at, DateTime
 
     # The OS Match for the guess
-    belongs_to :os_match, :class_name => 'OSMatch'
+    belongs_to :os_match
 
     # The Host that the guess was made against
     belongs_to :host

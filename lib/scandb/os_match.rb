@@ -34,7 +34,7 @@ module ScanDB
     # The guesses for this OS match
     has n, :guesses,
            :child_key => [:os_match_id],
-           :class_name => 'OSMatchGuess'
+           :model => 'OSMatchGuess'
 
     def to_s
       name

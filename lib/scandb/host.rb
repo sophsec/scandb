@@ -41,17 +41,15 @@ module ScanDB
     # The host-names of the host
     has n, :names,
            :order => [:scanned_at.desc],
-           :class_name => 'HostName'
+           :model => 'HostName'
 
     # The OS Class guesses of the host
     has n, :os_class_guesses,
-           :order => [:scanned_at.desc],
-           :class_name => 'OSClassGuess'
+           :order => [:scanned_at.desc]
 
     # The OS Match guesses of the host
     has n, :os_match_guesses,
-           :order => [:scanned_at.desc],
-           :class_name => 'OSMatchGuess'
+           :order => [:scanned_at.desc]
 
     # The scanned ports of the host
     has n, :scanned_ports

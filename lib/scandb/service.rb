@@ -32,7 +32,7 @@ module ScanDB
     property :name, String, :index => true
 
     # Scanned ports that were found to be running the service
-    has n, :scanned, :class_name => 'ScannedPort'
+    has n, :scanned, :model => 'ScannedPort'
 
     # Hosts that were found to be running the service
     has n, :hosts, :through => :scanned
