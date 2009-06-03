@@ -4,7 +4,7 @@ require 'rubygems'
 require 'hoe'
 require './lib/scandb/version.rb'
 
-Hoe.new('scandb', ScanDB::VERSION) do |p|
+Hoe.spec('scandb') do |p|
   p.rubyforge_name = 'scandb'
   p.developer('Postmodern', 'postmodern.mod3@gmail.com')
   p.remote_rdoc_dir = ''
