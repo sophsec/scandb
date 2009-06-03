@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'hoe'
+require 'hoe/signing'
 require './lib/scandb/version.rb'
 
 Hoe.spec('scandb') do |p|
