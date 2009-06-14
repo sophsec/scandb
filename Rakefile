@@ -6,10 +6,10 @@ require 'hoe/signing'
 require './lib/scandb/version.rb'
 
 Hoe.spec('scandb') do |p|
-  p.rubyforge_name = 'scandb'
-  p.developer('Postmodern', 'postmodern.mod3@gmail.com')
-  p.remote_rdoc_dir = ''
-  p.extra_deps = [
+  self.rubyforge_name = 'scandb'
+  self.developer('Postmodern', 'postmodern.mod3@gmail.com')
+  self.remote_rdoc_dir = ''
+  self.extra_deps = [
     ['do_sqlite3', '>=0.9.13'],
     ['dm-core', '>=0.10.0'],
     ['dm-types', '>=0.10.0'],
